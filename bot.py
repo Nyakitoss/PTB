@@ -63,6 +63,7 @@ DEFAULT_CHAT_SETTINGS = {
     "sticker_packs": DEFAULT_STICKERS
 }
 
+chat_histories = {}
 chat_settings = {}
 chat_counters = {}
 
@@ -321,14 +322,21 @@ async def handler(event):
             return
 
     async with client.action(event.chat_id, "typing"):
-        hist = []
-        async for m in client.iter_messages(event.chat_id, limit=6):
-            if m.out:
-                continue
-            t = (m.text or "").replace(AI_SIGN, "").strip()
-            if t:
-                hist.append(t)
-        hist.reverse()
+        cid = event.chat_id
+
+        if cid not in chat_counters:
+            chat_counters[cid] = []
+
+        # добавляем текущее сообщение
+        msg_text = (event.message.text or "").strip()
+
+        if msg_text:
+            chat_counters[cid].append(msg_text)
+
+        # ограничиваем историю
+        chat_counters[cid] = chat_counters[cid][-6:]
+
+        hist = chat_counters[cid]
 
         resp = await ask_ai(settings["prompt"], "\n".join(hist))
         resp = resp.strip().lower()
