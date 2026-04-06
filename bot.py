@@ -172,7 +172,6 @@ async def handler(event):
     sender = event.sender_id
     text = (event.message.text or "").strip()
     print("MESSAGE RECEIVED:", event.raw_text)
-    await event.reply("Я получил сообщение")
 
     if sender == MOM_ID or AI_SIGN in text:
         return
