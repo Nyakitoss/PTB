@@ -131,14 +131,6 @@ groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 OR_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 
-client = TelegramClient(
-    StringSession(),
-    int(os.getenv("API_ID")),
-    os.getenv("API_HASH")
-).start(
-    bot_token=os.getenv("BOT_TOKEN")
-)
-
 # ================== AI ==================
 
 async def ask_ai(prompt, history):
@@ -356,7 +348,7 @@ async def handler(event):
 # ================== START ==================
 
 client = TelegramClient(
-    "bot",
+    StringSession(),
     int(os.getenv("API_ID")),
     os.getenv("API_HASH")
 )
