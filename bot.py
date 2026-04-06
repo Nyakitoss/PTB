@@ -157,6 +157,14 @@ async def ask_ai(prompt, history):
             return r.json()["choices"][0]["message"]["content"]
         raise
 
+# ================== CLIENT ==================
+
+client = TelegramClient(
+    StringSession(),
+    int(os.getenv("API_ID")),
+    os.getenv("API_HASH")
+)
+
 # ================== HANDLER ==================
 
 @client.on(events.NewMessage)
@@ -346,12 +354,6 @@ async def handler(event):
                     print("[STICKER ERROR]", e)
 
 # ================== START ==================
-
-client = TelegramClient(
-    StringSession(),
-    int(os.getenv("API_ID")),
-    os.getenv("API_HASH")
-)
 
 async def main():
     load_runtime_config()
