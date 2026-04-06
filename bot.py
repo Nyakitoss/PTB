@@ -324,19 +324,17 @@ async def handler(event):
     async with client.action(event.chat_id, "typing"):
         cid = event.chat_id
 
-        if cid not in chat_counters:
-            chat_counters[cid] = []
+        if cid not in chat_histories:
+            chat_histories[cid] = []
 
-        # добавляем текущее сообщение
         msg_text = (event.message.text or "").strip()
 
         if msg_text:
-            chat_counters[cid].append(msg_text)
+            chat_histories[cid].append(msg_text)
 
-        # ограничиваем историю
-        chat_counters[cid] = chat_counters[cid][-6:]
+        chat_histories[cid] = chat_histories[cid][-6:]
 
-        hist = chat_counters[cid]
+        hist = chat_histories[cid]
 
         resp = await ask_ai(settings["prompt"], "\n".join(hist))
         resp = resp.strip().lower()
