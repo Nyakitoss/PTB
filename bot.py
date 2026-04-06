@@ -5,6 +5,7 @@ import random
 import requests
 from pathlib import Path
 from telethon import TelegramClient, events, functions, types
+from telethon.sessions import StringSession
 from groq import Groq
 from dotenv import load_dotenv
 import sys
@@ -129,8 +130,9 @@ def parse_percent(v):
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 OR_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
+
 client = TelegramClient(
-    "bot",
+    StringSession(),
     int(os.getenv("API_ID")),
     os.getenv("API_HASH")
 ).start(
